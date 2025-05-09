@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌹 Schwarze Blüten 🌹</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <h1>🌹 Schwarze Blüten 🌹</h1>
+  <div class="galeria">
+    <% arquivos.forEach(src => { %>
+      <% const ext = src.split('.').pop().toLowerCase(); %>
+      <% if (['mp4', 'avi', 'mkv', 'mov'].includes(ext)) { %>
+        <video controls>
+          <source src="<%= src %>" />
+        </video>
+      <% } else { %>
+        <img src="<%= src %>" />
+      <% } %>
+    <% }) %>
+  </div>
+</body>
+</html>
