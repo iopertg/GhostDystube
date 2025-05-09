@@ -16,30 +16,17 @@
     <thead>
       <tr>
         <th>Usuário</th>
-        <th>Pagamento</th>
         <th>É Admin?</th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody id="tabela-usuarios">
-      <!-- preenchido via JS -->
+      <!-- Preenchido via JS -->
     </tbody>
   </table>
 
-  <h2>Upload de Imagens para a Galeria</h2>
-  <form action="/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="imagem" accept="image/*" required />
-    <button type="submit">Enviar Imagem</button>
-  </form>
-
   <script>
-    const duracoes = {
-      "1 Mês": 30,
-      "3 Meses": 90,
-      "6 Meses": 180,
-      "1 Ano": 365
-    };
-
+    // Função para carregar usuários e permitir ações de administração
     fetch('/api/admin/users')
       .then(res => res.json())
       .then(usuarios => {
@@ -47,39 +34,16 @@
         usuarios.forEach(user => {
           const tr = document.createElement('tr');
 
-          const select = document.createElement('select');
-          for (const duracao in duracoes) {
-            const option = document.createElement('option');
-            option.value = duracoes[duracao];
-            option.textContent = duracao;
-            select.appendChild(option);
-          }
-
-          const addSubBtn = document.createElement('button');
-          addSubBtn.textContent = 'Adicionar Assinatura';
-          addSubBtn.onclick = () => {
-            const dias = parseInt(select.value);
-            fetch(`/api/admin/add-subscription/${user._id}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ dias })
-            })
-              .then(res => res.json())
-              .then(data => {
-                alert('Assinatura atualizada!');
-                location.reload();
-              })
-              .catch(console.error);
-          };
-
+          // Botão para promover usuário para admin
           const addAdminBtn = document.createElement('button');
-          addAdminBtn.textContent = 'Adicionar Admin';
+          addAdminBtn.textContent = 'Promover a Admin';
           addAdminBtn.onclick = () => {
             fetch(`/api/admin/set-admin/${user._id}`, {
               method: 'POST'
             }).then(() => location.reload());
           };
 
+          // Botão para remover admin
           const removeAdminBtn = document.createElement('button');
           removeAdminBtn.textContent = 'Remover Admin';
           removeAdminBtn.onclick = () => {
@@ -88,24 +52,33 @@
             }).then(() => location.reload());
           };
 
-          const cancelSubBtn = document.createElement('button');
-          cancelSubBtn.textContent = 'Cancelar Assinatura';
-          cancelSubBtn.onclick = () => {
-            fetch(`/api/admin/cancel-subscription/${user._id}`, {
+          // Botão para banir usuário
+          const banUserBtn = document.createElement('button');
+          banUserBtn.textContent = 'Banir Canal';
+          banUserBtn.onclick = () => {
+            fetch(`/api/admin/ban-user/${user._id}`, {
               method: 'POST'
             }).then(() => location.reload());
           };
 
+          // Botão para restaurar usuário banido
+          const unbanUserBtn = document.createElement('button');
+          unbanUserBtn.textContent = 'Restaurar Canal';
+          unbanUserBtn.onclick = () => {
+            fetch(`/api/admin/unban-user/${user._id}`, {
+              method: 'POST'
+            }).then(() => location.reload());
+          };
+
+          // Adiciona os botões ao usuário
           const tdAcoes = document.createElement('td');
-          tdAcoes.appendChild(select);
-          tdAcoes.appendChild(addSubBtn);
           tdAcoes.appendChild(addAdminBtn);
           tdAcoes.appendChild(removeAdminBtn);
-          tdAcoes.appendChild(cancelSubBtn);
+          tdAcoes.appendChild(banUserBtn);
+          tdAcoes.appendChild(unbanUserBtn);
 
           tr.innerHTML = `
             <td>${user.username}</td>
-            <td>${user.paymentStatus || 'Nenhum'}</td>
             <td>${user.isAdmin ? 'Sim' : 'Não'}</td>
           `;
           tr.appendChild(tdAcoes);

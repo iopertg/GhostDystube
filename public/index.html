@@ -2,14 +2,50 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meu Site de Fotos Secretas 👀</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GhostDystube</title>
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
-  <h1>Bem-vinde ao meu site secreto 💋</h1>
-  <p>Você ainda não tem acesso. Faça login primeiro!</p>
-  <a href="/login"><button>Login</button></a>
-  <a href="/register"><button>Registrar-se</button></a>
+  <header>
+    <h1>GhostDystube</h1>
+    <nav>
+      <a href="/">Início</a>
+      <a href="/login">Login</a>
+      <a href="/register">Registrar</a>
+      <a href="/painel">Painel</a>
+      <a href="/logout">Sair</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="galeria" class="galeria"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 GhostDystube</p>
+  </footer>
+
+  <script>
+    fetch('/uploads')
+      .then(res => res.json())
+      .then(arquivos => {
+        const galeria = document.getElementById('galeria');
+        arquivos.forEach(arquivo => {
+          const ext = arquivo.split('.').pop().toLowerCase();
+          let el;
+          if (['mp4', 'avi', 'mkv', 'mov'].includes(ext)) {
+            el = document.createElement('video');
+            el.src = arquivo;
+            el.controls = true;
+          } else {
+            el = document.createElement('img');
+            el.src = arquivo;
+          }
+          el.classList.add('midia');
+          galeria.appendChild(el);
+        });
+      });
+  </script>
 </body>
 </html>

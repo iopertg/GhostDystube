@@ -7,10 +7,30 @@
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
-  <h1>Bem-vinde ao painel, usuárie!</h1>
-  <p>Aqui ficam as fotos e conteúdos exclusivos.</p>
-  <a href="/logout"><button>Sair</button></a>
-  <br>
-  <a href="/admin"><button>Painel de Administração</button></a> <!-- Só acessível para admins -->
+  <header>
+    <h1>Bem-vinde ao painel, <span id="username"></span>!</h1>
+    <p>Gerencie seu canal, vídeos e configurações abaixo.</p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="/logout"><button class="btn">Sair</button></a></li>
+      <li><a href="/upload"><button class="btn">Enviar Vídeo</button></a></li> 
+      <li><a href="/meus-videos"><button class="btn">Meus Vídeos</button></a></li> 
+      <li><a href="/configuracao-canal"><button class="btn">Configurar Canal</button></a></li>
+    </ul>
+  </nav>
+
+  <!-- Área Admin -->
+  <div id="admin-area" class="admin-area">
+    <h2>Painel de Administração</h2>
+    <p>Como administrador, você pode gerenciar usuários e conteúdo na plataforma.</p>
+    <a href="/admin"><button class="btn">Painel Administrativo</button></a>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 GhostDystube - Todos os direitos reservados</p>
+  </footer>
+
 </body>
 </html>
